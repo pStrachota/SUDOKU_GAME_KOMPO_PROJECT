@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SudokuBoard {
 
     private final int sudokuSize = 9;
@@ -24,6 +26,33 @@ public class SudokuBoard {
             res.append('\n');
         }
         return res.toString();
+    }
+
+    public void fillBoard() {
+        this.makeRandom();
+        this.solveSudoku();
+    }
+
+
+    public boolean solveSudoku() {
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int column = 0; column < sudokuSize; column++) {
+                if (this.getValue(row, column) == 0) {
+                    for (int value = 1; value <= sudokuSize; value++) {
+                        if (this.overallCheck(row, column, value)) {
+                            this.setValue(row, column, value);
+                            if (this.solveSudoku()) {
+                                return true;
+                            } else {
+                                this.setValue(row, column, 0);
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int getValue(int row, int column) {
@@ -67,4 +96,25 @@ public class SudokuBoard {
         return true;
     }
 
+    private void clearBoard() {
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int column = 0; column < sudokuSize; column++) {
+                this.setValue(row, column, 0);
+            }
+        }
+    }
+
+
+    private void makeRandom() {
+        this.clearBoard();
+        Random random = new Random();
+        for (int i = 0; i < sudokuSize; i++) {
+            int randomRow = random.nextInt(9);
+            int randomColumn = random.nextInt(9);
+            int randomValue = random.nextInt(9) + 1;
+            if (overallCheck(randomRow, randomColumn, randomValue)) {
+                setValue(randomRow, randomColumn, randomValue);
+            }
+        }
+    }
 }
