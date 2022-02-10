@@ -12,14 +12,14 @@ class SudokuBoardTest {
 
     @BeforeEach
     void init() {
-        sudokuBoard = new SudokuBoard();
+        sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
     }
 
 
     @Test
     void checkForCorrectArrangment() {
         System.out.println("Check for correct arrangment");
-        sudokuBoard.fillBoard();
+        sudokuBoard.solveGame();
         System.out.println(sudokuBoard);
         assertTrue(sudokuBoard.checkBoard());
     }
@@ -34,12 +34,12 @@ class SudokuBoardTest {
     @Test
     void checkForDuplicates() {
         System.out.println("Check if two call fillboard method generated diffrent results");
-        sudokuBoard.fillBoard();
+        sudokuBoard.solveGame();
         System.out.println(sudokuBoard);
         String baseSudokuGrid = sudokuBoard.toString();
-        sudokuBoard.fillBoard();
+        sudokuBoard.solveGame();
         System.out.println(sudokuBoard);
         String nextSudokuGrid = sudokuBoard.toString();
-        assertNotSame(baseSudokuGrid, nextSudokuGrid);
+        assertFalse(baseSudokuGrid.equals(nextSudokuGrid));
     }
 }
