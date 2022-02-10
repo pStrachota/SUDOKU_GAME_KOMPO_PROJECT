@@ -3,8 +3,13 @@ import java.util.Random;
 
 public class SudokuBoard {
 
+    BacktrackingSudokuSolver backtrackingSudokuSolver;
     private final int sudokuSize = 9;
     private final int[][] board = new int[sudokuSize][sudokuSize];
+
+    public SudokuBoard(BacktrackingSudokuSolver backtrackingSudokuSolver) {
+        this.backtrackingSudokuSolver = backtrackingSudokuSolver;
+    }
 
 
     public int getValue(int row, int column) {
@@ -87,97 +92,9 @@ public class SudokuBoard {
         return res.toString();
     }
 
-    public void fillBoard() {
-        this.makeRandom();
-        this.solveSudoku();
-    }
-
-    private boolean solveSudoku() {
-        for (int row = 0; row < sudokuSize; row++) {
-            for (int column = 0; column < sudokuSize; column++) {
-                if (this.getValue(row, column) == 0) {
-                    for (int value = 1; value <= sudokuSize; value++) {
-                        if (this.overallCheck(row, column, value)) {
-                            this.setValue(row, column, value);
-                            if (this.solveSudoku()) {
-                                return true;
-                            } else {
-                                this.setValue(row, column, 0);
-                            }
-                        }
-                    }
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private boolean overallCheck(int row, int column, int value) {
-        return rowCheck(column, value) && columnCheck(row, value)
-                && boxCheck(row, column, value);
-    }
-
-    private boolean rowCheck(int column, int value) {
-        for (int row = 0; row < sudokuSize; row++) {
-            if (this.getValue(row, column) == value) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    //    public static void main(String[] args) {
-    //        System.out.println(0/3);
-    //        System.out.println(1/3);
-    //        System.out.println(2/3);
-    //        System.out.println(3/3);
-    //        System.out.println(4/3);
-    //        System.out.println(5/3);
-    //    }
-
-    private boolean columnCheck(int row, int value) {
-        for (int column = 0; column < sudokuSize; column++) {
-            if (this.getValue(row, column) == value) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean boxCheck(int row, int column, int value) {
-        int boxLenght = (int) Math.sqrt(sudokuSize); //3
-        int rowToCheck = (row / boxLenght) * boxLenght;
-        int columnToCheck = (column / boxLenght) * boxLenght;
-        for (int r = rowToCheck; r < rowToCheck + boxLenght; r++) {
-            for (int c = columnToCheck; c < columnToCheck + boxLenght; c++) {
-                if (this.getValue(r, c) == value) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private void clearBoard() {
-        for (int row = 0; row < sudokuSize; row++) {
-            for (int column = 0; column < sudokuSize; column++) {
-                this.setValue(row, column, 0);
-            }
-        }
+    public void solveGame() {
+        this.backtrackingSudokuSolver.solve(this);
     }
 
 
-    private void makeRandom() {
-        this.clearBoard();
-        Random random = new Random();
-        for (int i = 0; i < sudokuSize; i++) {
-            int randomRow = random.nextInt(9);
-            int randomColumn = random.nextInt(9);
-            int randomValue = random.nextInt(9) + 1;
-            if (overallCheck(randomRow, randomColumn, randomValue)) {
-                setValue(randomRow, randomColumn, randomValue);
-            }
-        }
-    }
 }
