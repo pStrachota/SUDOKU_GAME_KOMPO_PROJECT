@@ -6,7 +6,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override
     public void solve(SudokuBoard sudokuBoard) {
-       this.clearBoard(sudokuBoard);
+       this.makeRandom(sudokuBoard);
        this.solveSudoku(sudokuBoard);
     }
 

@@ -50,7 +50,7 @@ public class SudokuBoard {
     }
 
     private boolean isBoxCorrect() {
-        int boxLenght = 3;
+        int boxLenght = (int) Math.sqrt(sudokuSize); //3
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
                 int rowToCheck = (row / boxLenght) * boxLenght;
