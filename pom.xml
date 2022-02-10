@@ -15,6 +15,8 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
+<!--                    <testSourceDirectory>src/test/java/SudokuBoardTest.java</testSourceDirectory>-->
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <configLocation>checkstyle2020.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
