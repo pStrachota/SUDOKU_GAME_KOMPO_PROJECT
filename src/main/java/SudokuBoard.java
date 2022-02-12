@@ -1,14 +1,14 @@
-public class SudokuBoard {
+import java.util.Arrays;
+import java.util.List;
 
+public class SudokuBoard {
     private final int sudokuSize = 9;
-    private final SudokuField[][] board = new SudokuField[sudokuSize][sudokuSize];
+    private final List<SudokuField> board = Arrays.asList(new SudokuField[sudokuSize * sudokuSize]);
     BacktrackingSudokuSolver backtrackingSudokuSolver;
 
     public SudokuBoard(BacktrackingSudokuSolver backtrackingSudokuSolver) {
-        for (int row = 0; row < sudokuSize; row++) {
-            for (int column = 0; column < sudokuSize; column++) {
-                this.board[row][column] = new SudokuField();
-            }
+        for (int index = 0; index < sudokuSize * sudokuSize; index++) {
+            this.board.set(index, new SudokuField());
         }
         this.backtrackingSudokuSolver = backtrackingSudokuSolver;
     }
@@ -17,10 +17,10 @@ public class SudokuBoard {
         this.backtrackingSudokuSolver.solve(this);
     }
 
-    SudokuRow getRow(int y) {
+    public SudokuRow getRow(int y) {
         SudokuRow sudokuRow = new SudokuRow();
         for (int column = 0; column < sudokuSize; column++) {
-            sudokuRow.setSudokuField(column, this.board[y][column].getFieldValue());
+            sudokuRow.setSudokuField(column, this.board.get(y * sudokuSize + column).getFieldValue());
         }
         return sudokuRow;
     }
@@ -47,15 +47,15 @@ public class SudokuBoard {
         return isRowCorrect() && isColumnCorrect() && isBoxCorrect();
     }
 
-    SudokuColumn getColumn(int x) {
+    public SudokuColumn getColumn(int x) {
         SudokuColumn sudokuColumn = new SudokuColumn();
         for (int row = 0; row < sudokuSize; row++) {
-            sudokuColumn.setSudokuField(row, this.board[row][x].getFieldValue());
+            sudokuColumn.setSudokuField(row, this.board.get(x * sudokuSize + row).getFieldValue());
         }
         return sudokuColumn;
     }
 
-    SudokuBox getBox(int x, int y) {
+    public SudokuBox getBox(int x, int y) {
         int boxLenght = (int) Math.sqrt(sudokuSize);
         SudokuBox sudokuBox = new SudokuBox();
         int rowToWrite = (x / boxLenght) * boxLenght;
@@ -82,11 +82,11 @@ public class SudokuBoard {
     }
 
     public int getValue(int row, int column) {
-        return board[row][column].getFieldValue();
+        return this.board.get(row * sudokuSize + column).getFieldValue();
     }
 
     public void setValue(int row, int column, int value) {
-        board[row][column].setFieldValue(value);
+        this.board.get(row * sudokuSize + column).setFieldValue(value);
     }
 
     @Override

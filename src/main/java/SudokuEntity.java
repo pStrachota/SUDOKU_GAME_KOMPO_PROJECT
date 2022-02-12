@@ -1,20 +1,24 @@
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class SudokuEntity {
-    private SudokuField[] sudokuFields = new SudokuField[9];
+    private final int entitySize = 9;
+    private final List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[9]);
 
     public SudokuEntity() {
-        for (int field = 0; field < 9; field++) {
-            sudokuFields[field] = new SudokuField();
+        for (int index = 0; index < entitySize; index++) {
+            sudokuFields.set(index, new SudokuField());
         }
     }
 
-        public void setSudokuField(int index, int value) {
-        this.sudokuFields[index].setFieldValue(value);
+    public void setSudokuField(int index, int value) {
+        this.sudokuFields.get(index).setFieldValue(value);
     }
 
     public boolean verify() {
-        for (int field = 0; field < 9; field++) {
-            for (int index = 0; index < 9; index++) {
-                if (sudokuFields[field].getFieldValue() == sudokuFields[index].getFieldValue()
+        for (int field = 0; field < entitySize; field++) {
+            for (int index = 0; index < entitySize; index++) {
+                if (sudokuFields.get(field).getFieldValue() == sudokuFields.get(index).getFieldValue()
                         && field != index) {
                     return false;
                 }
