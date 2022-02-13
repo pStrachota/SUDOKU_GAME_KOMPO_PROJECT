@@ -26,6 +26,8 @@
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class SudokuBoard {
     private final int sudokuSize = 9;
@@ -46,6 +48,27 @@ public class SudokuBoard {
 
     public boolean checkBoard() {
         return isRowCorrect() && isColumnCorrect() && isBoxCorrect();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuBoard that = (SudokuBoard) o;
+
+        return new EqualsBuilder().append(board, that.board)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
     }
 
     private boolean isRowCorrect() {
