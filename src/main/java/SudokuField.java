@@ -34,7 +34,7 @@ public class SudokuField {
 
     public void setFieldValue(int value) {
         if (value < 0 || value > 9) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Incorrect sudoku value");
         }
         this.value = value;
     }

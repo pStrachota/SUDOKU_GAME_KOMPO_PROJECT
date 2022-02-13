@@ -24,7 +24,9 @@
  * #L%
  */
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -65,6 +67,23 @@ class SudokuBoardTest {
         System.out.println(sudokuBoard);
         String nextSudokuGrid = sudokuBoard.toString();
         assertFalse(baseSudokuGrid.equals(nextSudokuGrid));
+    }
+
+    @Test
+    void setFieldValueTest() {
+        System.out.println("Set sudoku value");
+        sudokuBoard.setValue(0, 0, 1);
+        assertEquals(1, sudokuBoard.getValue(0, 0));
+    }
+
+    @Test
+    void setIncorrectFieldValueTest() {
+        System.out.println("When incorrect sudoku value throw Illegal argument exception");
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                sudokuBoard.setValue(0, 0, 10));
+        String actualMessage = exception.getMessage();
+        String expectedMessage = "Incorrect sudoku value";
+        assertEquals(actualMessage, expectedMessage);
     }
 
 }

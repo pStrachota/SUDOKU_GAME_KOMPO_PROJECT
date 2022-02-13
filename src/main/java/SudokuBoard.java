@@ -39,6 +39,7 @@ public class SudokuBoard {
         this.backtrackingSudokuSolver = backtrackingSudokuSolver;
     }
 
+
     public void solveGame() {
         this.backtrackingSudokuSolver.solve(this);
     }
