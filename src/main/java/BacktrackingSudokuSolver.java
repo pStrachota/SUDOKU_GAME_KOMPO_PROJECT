@@ -24,9 +24,10 @@
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class BacktrackingSudokuSolver implements SudokuSolver {
+public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
     private final int sudokuSize = 9;
 
