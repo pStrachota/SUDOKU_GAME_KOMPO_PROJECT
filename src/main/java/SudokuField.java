@@ -24,12 +24,21 @@
  * #L%
  */
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class SudokuField {
 
     private int value = 0;
 
     public int getFieldValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("value", value)
+                .toString();
     }
 
     public void setFieldValue(int value) {

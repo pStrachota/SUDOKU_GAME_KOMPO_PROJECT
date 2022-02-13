@@ -26,6 +26,7 @@
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class SudokuEntity {
     private final int entitySize = 9;
@@ -39,6 +40,13 @@ public abstract class SudokuEntity {
 
     public void setSudokuField(int index, int value) {
         this.sudokuFields.get(index).setFieldValue(value);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("sudokuFields", sudokuFields)
+                .toString();
     }
 
     public boolean verify() {
