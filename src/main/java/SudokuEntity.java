@@ -44,6 +44,10 @@ public abstract class SudokuEntity {
         this.sudokuFields.get(index).setFieldValue(value);
     }
 
+    public int getSudokuField(int index) {
+        return this.sudokuFields.get(index).getFieldValue();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

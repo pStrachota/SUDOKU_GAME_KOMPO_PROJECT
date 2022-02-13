@@ -26,6 +26,7 @@
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -43,23 +44,23 @@ class SudokuBoardTest {
 
 
     @Test
-    void checkForCorrectArrangment() {
-        System.out.println("Check for correct arrangment");
+    void checkForCorrectArrangement() {
+        System.out.println("Check for correct arrangement");
         sudokuBoard.solveGame();
         System.out.println(sudokuBoard);
         assertTrue(sudokuBoard.checkBoard());
     }
 
     @Test
-    void checkForIncorrectArrangment() {
-        System.out.println("Check for incorrect arrangment");
+    void checkForIncorrectArrangement() {
+        System.out.println("Check for incorrect arrangement");
         System.out.println(sudokuBoard);
         assertFalse(sudokuBoard.checkBoard());
     }
 
     @Test
     void checkForDuplicates() {
-        System.out.println("Check if two call fillboard method generated diffrent results");
+        System.out.println("Check if two call fillboard method generated different results");
         sudokuBoard.solveGame();
         System.out.println(sudokuBoard);
         String baseSudokuGrid = sudokuBoard.toString();
@@ -84,6 +85,48 @@ class SudokuBoardTest {
         String actualMessage = exception.getMessage();
         String expectedMessage = "Incorrect sudoku value";
         assertEquals(actualMessage, expectedMessage);
+    }
+
+    @Test
+    void negativeHashcodeTest() {
+        System.out.println("Check sudoku board object hashcode "
+                + "with different sudoku board object hashcode");
+        sudokuBoard.setValue(0, 0, 1);
+        SudokuBoard differentSudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        differentSudokuBoard.setValue(0, 0, 2);
+        assertNotEquals(sudokuBoard, differentSudokuBoard);
+    }
+
+    @Test
+    void negativePositiveTest() {
+        System.out.println("Check sudoku board object hashcode "
+                + "with identical sudoku board object hashcode");
+        sudokuBoard.setValue(0, 0, 1);
+        SudokuBoard differentSudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        differentSudokuBoard.setValue(0, 0, 1);
+        assertEquals(sudokuBoard, differentSudokuBoard);
+    }
+
+    @Test
+    void equalsNegativeTest() {
+        System.out.println("Check sudoku board object with null object "
+                + "and different sudoku board object");
+        SudokuBoard differentSudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        differentSudokuBoard.setValue(0, 0, 1);
+        assertNotEquals(sudokuBoard, differentSudokuBoard);
+        assertNotEquals(sudokuBoard, null);
+    }
+
+    @Test
+    void equalsPositiveTest() {
+        System.out.println("Check sudoku board object "
+                + "with identical sudoku board object");
+        SudokuBoard identicalSudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        sudokuBoard.setValue(0, 0, 1);
+        SudokuBoard sameReferenceSudokuBoard = sudokuBoard;
+        identicalSudokuBoard.setValue(0, 0, 1);
+        assertEquals(sudokuBoard, identicalSudokuBoard);
+        assertEquals(sudokuBoard, sameReferenceSudokuBoard);
     }
 
 }
