@@ -26,6 +26,9 @@
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class SudokuEntity {
     private final int entitySize = 9;
@@ -39,6 +42,38 @@ public abstract class SudokuEntity {
 
     public void setSudokuField(int index, int value) {
         this.sudokuFields.get(index).setFieldValue(value);
+    }
+
+    public int getSudokuField(int index) {
+        return this.sudokuFields.get(index).getFieldValue();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuEntity that = (SudokuEntity) o;
+
+        return new EqualsBuilder()
+                .append(sudokuFields, that.sudokuFields).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(sudokuFields).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("sudokuFields", sudokuFields)
+                .toString();
     }
 
     public boolean verify() {
