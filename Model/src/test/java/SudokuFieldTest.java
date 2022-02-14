@@ -27,6 +27,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,5 +101,19 @@ class SudokuFieldTest {
         assertEquals(sudokuField, identicalSudokuField);
         assertEquals(sudokuField, sameReferenceSudokuField);
     }
+
+    @Test
+    void cloneTest() {
+        System.out.println("Check equals between sudokuField and sudokuFieldClone");
+        try {
+            SudokuField sudokuFieldClone = (SudokuField) sudokuField.clone();
+            assertEquals(sudokuField, sudokuFieldClone);
+            sudokuFieldClone.setFieldValue(1);
+            assertNotEquals(sudokuField, sudokuFieldClone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

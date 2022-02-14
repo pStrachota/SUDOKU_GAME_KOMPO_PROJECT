@@ -129,4 +129,17 @@ class SudokuBoardTest {
         assertEquals(sudokuBoard, sameReferenceSudokuBoard);
     }
 
+    @Test
+    void cloneTest() {
+        System.out.println("Check equals between sudokuBoard and sudokuBoardClone");
+        try {
+            SudokuBoard sudokuBoardClone = (SudokuBoard) sudokuBoard.clone();
+            assertEquals(sudokuBoard, sudokuBoardClone);
+            sudokuBoardClone.setValue(0, 0, 1);
+            assertNotEquals(sudokuBoard, sudokuBoardClone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
