@@ -115,5 +115,28 @@ class SudokuFieldTest {
         }
     }
 
+    @Test
+    void compareToTest() {
+        System.out.println("test different compareTo result values");
+        sudokuField.setFieldValue(2);
+        SudokuField sudokuFieldForTest = new SudokuField();
+        sudokuFieldForTest.setFieldValue(2);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) == 0);
+        sudokuFieldForTest.setFieldValue(4);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) > 0);
+        sudokuFieldForTest.setFieldValue(1);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) < 0);
+    }
 
+    @Test
+    void negativeCompareToTest() {
+        System.out.println("compare sudokuField with null, what generates exception");
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> sudokuField.compareTo(null));
+        String actualMessage = exception.getMessage();
+        String expectedMessage = "Cannot compare sudoku field object with null";
+        assertEquals(actualMessage, expectedMessage);
+    }
 }
+
+
