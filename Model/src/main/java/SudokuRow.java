@@ -24,15 +24,6 @@
  * #L%
  */
 
-public class SudokuRow extends SudokuEntity implements Cloneable {
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        SudokuRow sudokuRowClone = new SudokuRow();
-        for (int index = 0; index < 9; index++) {
-            sudokuRowClone.setSudokuField(index, this.getSudokuField(index));
-        }
-        return sudokuRowClone;
-    }
+public class SudokuRow extends SudokuEntity {
 
 }
