@@ -28,6 +28,10 @@ public class SudokuColumn extends SudokuEntity implements Cloneable {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        SudokuColumn sudokuColumnClone = new SudokuColumn();
+        for (int index = 0; index < 9; index++) {
+            sudokuColumnClone.setSudokuField(index, this.getSudokuField(index));
+        }
+        return sudokuColumnClone;
     }
 }
