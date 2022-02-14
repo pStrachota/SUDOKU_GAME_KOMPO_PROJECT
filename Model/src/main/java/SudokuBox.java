@@ -24,6 +24,9 @@
  * #L%
  */
 
-public class SudokuBox extends SudokuEntity {
-
+public class SudokuBox extends SudokuEntity implements Cloneable {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

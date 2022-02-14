@@ -24,6 +24,10 @@
  * #L%
  */
 
-public class SudokuColumn extends SudokuEntity {
+public class SudokuColumn extends SudokuEntity implements Cloneable {
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
