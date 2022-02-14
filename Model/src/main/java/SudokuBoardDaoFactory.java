@@ -2,7 +2,7 @@
  * #%L
  * KOMPO_PROJECT
  * %%
- * Copyright (C) 2021 - 2022 TUL
+ * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,51 +23,12 @@
  * THE SOFTWARE.
  * #L%
  */
+public class SudokuBoardDaoFactory {
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-public class SudokuField {
-
-    private int value = 0;
-
-    public int getFieldValue() {
-        return value;
+    private SudokuBoardDaoFactory() {
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("value", value)
-                .toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        SudokuField that = (SudokuField) o;
-
-        return new EqualsBuilder().append(value, that.value)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(value).toHashCode();
-    }
-
-    public void setFieldValue(int value) {
-        if (value < 0 || value > 9) {
-            throw new IllegalArgumentException("Incorrect sudoku value");
-        }
-        this.value = value;
+    public static Dao<SudokuBoard> getFileDao(String fileName) {
+        return new FileSudokuBoardDao(fileName);
     }
 }

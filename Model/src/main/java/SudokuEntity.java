@@ -24,13 +24,14 @@
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public abstract class SudokuEntity {
+public abstract class SudokuEntity implements Serializable {
     private final int entitySize = 9;
     private final List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[9]);
 

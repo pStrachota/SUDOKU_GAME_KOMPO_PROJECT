@@ -24,12 +24,13 @@
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class SudokuBoard {
+public class SudokuBoard implements Serializable {
     private final int sudokuSize = 9;
     private final List<SudokuField> board = Arrays.asList(new SudokuField[sudokuSize * sudokuSize]);
     BacktrackingSudokuSolver backtrackingSudokuSolver;
