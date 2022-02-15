@@ -81,6 +81,23 @@ public class SudokuBoardViewController {
         }
     }
 
+    @FXML
+    public void onActionButtonCheck() {
+
+        if (sudokuBoardForGame.checkBoard()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("WYNIK GRY");
+            alert.setContentText("WYGRALES");
+            alert.showAndWait();
+
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("WYNIK GRY");
+            alert.setContentText("PRZEGRALES");
+            alert.showAndWait();
+        }
+    }
+
 
     public void customizeTextField(TextField textField, int row, int column) {
         textField.setMinSize(60, 66);
