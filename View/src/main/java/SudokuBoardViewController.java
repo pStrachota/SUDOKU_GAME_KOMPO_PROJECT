@@ -25,19 +25,27 @@
  */
 
 import java.io.IOException;
+import javafx.beans.property.adapter.JavaBeanIntegerProperty;
+import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.util.converter.NumberStringConverter;
 
 
 public class SudokuBoardViewController {
-    @FXML
-    GridPane board;
+
     private DifficultyLevel difficultyFromViewController =
             DifficultiesViewController.difficulty;
     private SudokuBoard sudokuBoardForGame = new SudokuBoard(new BacktrackingSudokuSolver());
+    private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
+    private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
+
+    @FXML
+    GridPane board;
 
     @FXML
     public void initialize() {
@@ -54,6 +62,19 @@ public class SudokuBoardViewController {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 TextField textField = new TextField();
+
+                try {
+                    fieldProperty[i][j] = builder
+                            .bean(new FieldAdapter(sudokuBoardForGame, i, j))
+                            .name("FieldValue")
+                            .build();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+
+                textField.textProperty().bindBidirectional(
+                        fieldProperty[i][j], new NumberStringConverter());
+
                 customizeTextField(textField, i, j);
                 board.add(textField, j, i);
             }
