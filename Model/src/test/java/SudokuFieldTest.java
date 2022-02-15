@@ -27,6 +27,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,4 +102,41 @@ class SudokuFieldTest {
         assertEquals(sudokuField, sameReferenceSudokuField);
     }
 
+    @Test
+    void cloneTest() {
+        System.out.println("Check equals between sudokuField and sudokuFieldClone");
+        try {
+            SudokuField sudokuFieldClone = (SudokuField) sudokuField.clone();
+            assertEquals(sudokuField, sudokuFieldClone);
+            sudokuFieldClone.setFieldValue(1);
+            assertNotEquals(sudokuField, sudokuFieldClone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void compareToTest() {
+        System.out.println("test different compareTo result values");
+        sudokuField.setFieldValue(2);
+        SudokuField sudokuFieldForTest = new SudokuField();
+        sudokuFieldForTest.setFieldValue(2);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) == 0);
+        sudokuFieldForTest.setFieldValue(4);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) > 0);
+        sudokuFieldForTest.setFieldValue(1);
+        assertTrue(sudokuFieldForTest.compareTo(sudokuField) < 0);
+    }
+
+    @Test
+    void negativeCompareToTest() {
+        System.out.println("compare sudokuField with null, what generates exception");
+        Exception exception = assertThrows(NullPointerException.class,
+                () -> sudokuField.compareTo(null));
+        String actualMessage = exception.getMessage();
+        String expectedMessage = "Cannot compare sudoku field object with null";
+        assertEquals(actualMessage, expectedMessage);
+    }
 }
+
+

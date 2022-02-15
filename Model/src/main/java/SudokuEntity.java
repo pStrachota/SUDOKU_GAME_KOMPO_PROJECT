@@ -31,7 +31,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public abstract class SudokuEntity implements Serializable {
+public abstract class SudokuEntity implements Serializable, Cloneable {
     private final int entitySize = 9;
     private final List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[9]);
 
@@ -39,14 +39,6 @@ public abstract class SudokuEntity implements Serializable {
         for (int index = 0; index < entitySize; index++) {
             sudokuFields.set(index, new SudokuField());
         }
-    }
-
-    public void setSudokuField(int index, int value) {
-        this.sudokuFields.get(index).setFieldValue(value);
-    }
-
-    public int getSudokuField(int index) {
-        return this.sudokuFields.get(index).getFieldValue();
     }
 
     @Override
@@ -75,6 +67,38 @@ public abstract class SudokuEntity implements Serializable {
         return new ToStringBuilder(this)
                 .append("sudokuFields", sudokuFields)
                 .toString();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        if (this instanceof SudokuRow sudokuRow) {
+            sudokuRow = new SudokuRow();
+            for (int index = 0; index < entitySize; index++) {
+                sudokuRow.setSudokuField(index, this.getSudokuField(index));
+            }
+            return sudokuRow;
+        } else if (this instanceof SudokuColumn sudokuColumn) {
+            sudokuColumn = new SudokuColumn();
+            for (int index = 0; index < entitySize; index++) {
+                sudokuColumn.setSudokuField(index, this.getSudokuField(index));
+            }
+            return sudokuColumn;
+        } else if (this instanceof SudokuBox sudokuBox) {
+            sudokuBox = new SudokuBox();
+            for (int index = 0; index < entitySize; index++) {
+                sudokuBox.setSudokuField(index, this.getSudokuField(index));
+            }
+            return sudokuBox;
+        }
+        return null;
+    }
+
+    public void setSudokuField(int index, int value) {
+        this.sudokuFields.get(index).setFieldValue(value);
+    }
+
+    public int getSudokuField(int index) {
+        return this.sudokuFields.get(index).getFieldValue();
     }
 
     public boolean verify() {

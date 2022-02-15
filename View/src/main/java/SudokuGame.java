@@ -1,8 +1,15 @@
+import java.io.IOException;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 /*
  * #%L
- * KOMPO_PROJECT
+ * View
  * %%
- * Copyright (C) 2021 - 2022 TUL
+ * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +31,31 @@
  * #L%
  */
 
-public class SudokuColumn extends SudokuEntity{
 
+public class SudokuGame extends Application {
+
+    public static final String pathToGameMode = "sudoku-board-view.fxml";
+    public static final String pathToMenu = "difficulties-view.fxml";
+    private static Scene scene = new Scene(new Pane());
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+
+        switchMode(pathToMenu);
+        stage.setMaximized(true);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    public static void switchMode(String pathToFxmlFile) throws IOException {
+        FXMLLoader fxmlLoader =
+                new FXMLLoader(
+                        SudokuGame.class.getResource(pathToFxmlFile));
+        scene.setRoot(fxmlLoader.load());
+    }
 }

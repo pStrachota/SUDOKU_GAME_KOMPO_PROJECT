@@ -1,8 +1,8 @@
 /*
  * #%L
- * KOMPO_PROJECT
+ * View
  * %%
- * Copyright (C) 2021 - 2022 TUL
+ * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,30 @@
  * THE SOFTWARE.
  * #L%
  */
+public class FieldCoordinates {
 
-public class SudokuColumn extends SudokuEntity{
+    private int fieldX;
+    private int fieldY;
+
+    public FieldCoordinates(int fieldX, int fieldY) {
+        this.fieldX = fieldX;
+        this.fieldY = fieldY;
+    }
+
+    public int getFieldX() {
+        return fieldX;
+    }
+
+    public void setFieldX(int fieldX) {
+        this.fieldX = fieldX;
+    }
+
+    public int getFieldY() {
+        return fieldY;
+    }
+
+    public void setFieldY(int fieldY) {
+        this.fieldY = fieldY;
+    }
 
 }

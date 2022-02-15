@@ -1,0 +1,29 @@
+.anchor-pane{
+    -fx-background-color: rgba(0, 95, 238, 0.45);
+    /*-fx-background-image: url("at_the_table.png");*/
+    -fx-background-position: right center;
+    -fx-background-repeat: no-repeat;
+    -fx-pref-height: 1024;
+    -fx-pref-width: 1440;
+}
+
+.sudoku-board{
+    -fx-pref-width: 720;
+    -fx-pref-height: 720;
+}
+
+.cell-text{
+    -fx-background-color: yellow;
+    -fx-pref-width: 80;
+    -fx-alignment: center;
+    -fx-pref-height: 80;
+    -fx-font-size: 36;
+}
+
+.VBox{
+    -fx-background-color: rgba(0, 95, 238, 0.45);
+    -fx-background-position: right center;
+    -fx-background-repeat: no-repeat;
+    -fx-pref-height: 1024;
+    -fx-pref-width: 1440;
+}

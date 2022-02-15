@@ -1,8 +1,8 @@
 /*
  * #%L
- * KOMPO_PROJECT
+ * View
  * %%
- * Copyright (C) 2021 - 2022 TUL
+ * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,37 @@
  * THE SOFTWARE.
  * #L%
  */
+import java.io.IOException;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 
-public class SudokuColumn extends SudokuEntity{
+public class DifficultiesViewController {
+
+    static DifficultyLevel difficulty;
+
+
+    @FXML
+    public void pressHard() throws IOException {
+        difficulty = DifficultyLevel.Hard;
+        SudokuGame.switchMode(SudokuGame.pathToGameMode);
+    }
+
+    @FXML
+    public void pressMedium() throws IOException {
+        difficulty = DifficultyLevel.Medium;
+        SudokuGame.switchMode(SudokuGame.pathToGameMode);
+    }
+
+    @FXML
+    public void pressEasy() throws IOException {
+        difficulty = DifficultyLevel.Easy;
+        SudokuGame.switchMode(SudokuGame.pathToGameMode);
+    }
+
+    @FXML
+    void pressExit() {
+        Platform.exit();
+        System.exit(0);
+    }
 
 }

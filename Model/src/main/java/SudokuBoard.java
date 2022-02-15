@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class SudokuBoard implements Serializable {
+public class SudokuBoard implements Serializable, Cloneable {
     private final int sudokuSize = 9;
     private final List<SudokuField> board = Arrays.asList(new SudokuField[sudokuSize * sudokuSize]);
     BacktrackingSudokuSolver backtrackingSudokuSolver;
@@ -42,34 +42,12 @@ public class SudokuBoard implements Serializable {
         this.backtrackingSudokuSolver = backtrackingSudokuSolver;
     }
 
-
     public void solveGame() {
         this.backtrackingSudokuSolver.solve(this);
     }
 
     public boolean checkBoard() {
         return isRowCorrect() && isColumnCorrect() && isBoxCorrect();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        SudokuBoard that = (SudokuBoard) o;
-
-        return new EqualsBuilder().append(board, that.board)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(board).toHashCode();
     }
 
     private boolean isRowCorrect() {
@@ -137,8 +115,40 @@ public class SudokuBoard implements Serializable {
         return this.board.get(row * sudokuSize + column).getFieldValue();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuBoard that = (SudokuBoard) o;
+
+        return new EqualsBuilder().append(board, that.board)
+                .isEquals();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        SudokuBoard sudokuBoardClone = new SudokuBoard(new BacktrackingSudokuSolver());
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int column = 0; column < sudokuSize; column++) {
+                sudokuBoardClone.setValue(row, column, this.getValue(row, column));
+            }
+        }
+        return sudokuBoardClone;
+    }
+
     public void setValue(int row, int column, int value) {
         this.board.get(row * sudokuSize + column).setFieldValue(value);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
     }
 
     @Override

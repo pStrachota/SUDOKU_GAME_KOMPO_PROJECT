@@ -34,18 +34,18 @@ import org.junit.jupiter.api.Test;
 
 class SudokuEntityTest {
 
-    SudokuEntity sudokuEntity;
+    SudokuEntity rowSudokuEntity;
 
     @BeforeEach
     void init() {
-        sudokuEntity = new SudokuRow();
+        rowSudokuEntity = new SudokuRow();
     }
 
     @Test
     void setSudokuFieldTest() {
         System.out.println("Set sudoku entity (row) test");
-        sudokuEntity.setSudokuField(0, 1);
-        assertEquals(1, sudokuEntity.getSudokuField(0));
+        rowSudokuEntity.setSudokuField(0, 1);
+        assertEquals(1, rowSudokuEntity.getSudokuField(0));
     }
 
 
@@ -54,9 +54,9 @@ class SudokuEntityTest {
         System.out.println("Check sudoku entity (row) object hashcode "
                 + "with different sudoku entity object hashcode");
         SudokuEntity differentSudokuEntity = new SudokuRow();
-        sudokuEntity.setSudokuField(0, 2);
+        rowSudokuEntity.setSudokuField(0, 2);
         differentSudokuEntity.setSudokuField(0, 1);
-        assertNotEquals(sudokuEntity.hashCode(), differentSudokuEntity.hashCode());
+        assertNotEquals(rowSudokuEntity.hashCode(), differentSudokuEntity.hashCode());
     }
 
     @Test
@@ -64,9 +64,9 @@ class SudokuEntityTest {
         System.out.println("Check sudoku entity (row) object hashcode "
                 + "with identical sudoku entity object hashcode");
         SudokuEntity differentSudokuEntity = new SudokuRow();
-        sudokuEntity.setSudokuField(0, 1);
+        rowSudokuEntity.setSudokuField(0, 1);
         differentSudokuEntity.setSudokuField(0, 1);
-        assertEquals(sudokuEntity.hashCode(), differentSudokuEntity.hashCode());
+        assertEquals(rowSudokuEntity.hashCode(), differentSudokuEntity.hashCode());
     }
 
     @Test
@@ -74,38 +74,51 @@ class SudokuEntityTest {
         System.out.println("Check sudoku entity (row) object "
                 + "with null object and different sudoku entity object");
         SudokuEntity differentSudokuEntity = new SudokuRow();
-        sudokuEntity.setSudokuField(0, 2);
+        rowSudokuEntity.setSudokuField(0, 2);
         differentSudokuEntity.setSudokuField(0, 1);
-        assertNotEquals(sudokuEntity, differentSudokuEntity);
-        assertNotEquals(sudokuEntity, null);
+        assertNotEquals(rowSudokuEntity, differentSudokuEntity);
+        assertNotEquals(rowSudokuEntity, null);
     }
 
     @Test
     void verifyNegativeTest() {
         System.out.println("Set identical values to sudoku entity");
-        sudokuEntity.setSudokuField(0, 1);
-        sudokuEntity.setSudokuField(1, 1);
-        assertFalse(sudokuEntity.verify());
+        rowSudokuEntity.setSudokuField(0, 1);
+        rowSudokuEntity.setSudokuField(1, 1);
+        assertFalse(rowSudokuEntity.verify());
     }
 
     @Test
     void verifyPositiveTest() {
         System.out.println("Set different values to sudoku entity");
         for (int indexAndValue = 0; indexAndValue < 9; indexAndValue++) {
-            sudokuEntity.setSudokuField(indexAndValue, indexAndValue);
+            rowSudokuEntity.setSudokuField(indexAndValue, indexAndValue);
         }
-        assertTrue(sudokuEntity.verify());
+        assertTrue(rowSudokuEntity.verify());
     }
 
     @Test
     void equalsPositiveTest() {
         System.out.println("Check sudoku entity object "
                 + "with identical sudoku entity object");
-        sudokuEntity.setSudokuField(0, 1);
-        SudokuEntity sameReferenceSudokuEntity = sudokuEntity;
+        rowSudokuEntity.setSudokuField(0, 1);
+        SudokuEntity sameReferenceSudokuEntity = rowSudokuEntity;
         SudokuEntity identicalSudokuEntity = new SudokuRow();
         identicalSudokuEntity.setSudokuField(0, 1);
-        assertEquals(sudokuEntity, identicalSudokuEntity);
-        assertEquals(sudokuEntity, sameReferenceSudokuEntity);
+        assertEquals(rowSudokuEntity, identicalSudokuEntity);
+        assertEquals(rowSudokuEntity, sameReferenceSudokuEntity);
+    }
+
+    @Test
+    void cloneTest() {
+        System.out.println("Check equals between rowSudokuEntity and rowSudokuEntityClone");
+        try {
+            SudokuEntity rowSudokuEntityClone = (SudokuEntity) rowSudokuEntity.clone();
+            assertEquals(rowSudokuEntity, rowSudokuEntityClone);
+            rowSudokuEntityClone.setSudokuField(0, 1);
+            assertNotEquals(rowSudokuEntity, rowSudokuEntityClone);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 }
