@@ -42,7 +42,23 @@
                   <Font size="36.0" />
                </font>
             </Button>
-            <Button onAction="#onActionButtonCheck" mnemonicParsing="false" prefHeight="78.0" prefWidth="422.0" text="Sprawdź, czy wygrałeś">
+            <Button mnemonicParsing="false" onAction="#onActionButtonCheck" prefHeight="78.0" prefWidth="325.0" text="Sprawdź wynik">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#saveGameAction" prefHeight="78.0" prefWidth="216.0" text="Zapisz grę">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#loadGameAction" prefHeight="78.0" prefWidth="249.0" text="Wczytaj grę">
                <font>
                   <Font size="36.0" />
                </font>

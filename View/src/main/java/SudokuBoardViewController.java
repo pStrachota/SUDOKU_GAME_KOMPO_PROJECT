@@ -24,6 +24,7 @@
  * #L%
  */
 
+import java.io.File;
 import java.io.IOException;
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
@@ -33,19 +34,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 
 public class SudokuBoardViewController {
 
+    private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
+    private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
+    @FXML
+    GridPane board;
     private DifficultyLevel difficultyFromViewController =
             DifficultiesViewController.difficulty;
     private SudokuBoard sudokuBoardForGame = new SudokuBoard(new BacktrackingSudokuSolver());
-    private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
-    private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
-
-    @FXML
-    GridPane board;
 
     @FXML
     public void initialize() {
@@ -81,6 +83,20 @@ public class SudokuBoardViewController {
         }
     }
 
+    public void customizeTextField(TextField textField, int row, int column) {
+        textField.setMinSize(60, 66);
+        textField.setFont(Font.font(36));
+        textField.setAlignment(Pos.CENTER);
+
+        if (sudokuBoardForGame.getValue(row, column) != 0 &&
+                !sudokuBoardForGame.getBooleanValue(row, column)) {
+            textField.setDisable(true);
+            textField.setText(String.valueOf(sudokuBoardForGame.getValue(row, column)));
+        } else if (sudokuBoardForGame.getValue(row, column) == 0) {
+            textField.clear();
+        }
+    }
+
     @FXML
     public void onActionButtonCheck() {
 
@@ -98,20 +114,44 @@ public class SudokuBoardViewController {
         }
     }
 
+    public void saveGameAction() {
 
-    public void customizeTextField(TextField textField, int row, int column) {
-        textField.setMinSize(60, 66);
-        textField.setFont(Font.font(36));
-        textField.setAlignment(Pos.CENTER);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files",
+                        "*.txt"));
+        File file = fileChooser.showSaveDialog(new Stage());
 
-        if (sudokuBoardForGame.getValue(row, column) != 0) {
-            textField.setDisable(true);
-            textField.setText(String.valueOf(sudokuBoardForGame.getValue(row, column)));
-        } else if (sudokuBoardForGame.getValue(row, column) == 0) {
-            textField.clear();
+        try (Dao<SudokuBoard> fileSudokuBoardDao =
+                     SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
+            fileSudokuBoardDao.write(sudokuBoardForGame);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
+    public void loadGameAction() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files",
+                        "*.txt"));
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        try (Dao<SudokuBoard> fileSudokuBoardDao =
+                     SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
+            sudokuBoardForGame = fileSudokuBoardDao.read();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        reloadGrid();
+    }
+
+    void reloadGrid() {
+        board.getChildren().clear();
+        fillFields();
+    }
 
     @FXML
     protected void pressBack() throws IOException {
