@@ -10,10 +10,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,8 +26,11 @@
 
 import java.io.File;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -36,13 +39,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
+import javafx.util.StringConverter;
 
 
 public class SudokuBoardViewController {
 
     private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
     private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
+    StringConverter overridenConverter = new ModifiedStringConverter();
+
     @FXML
     GridPane board;
     private DifficultyLevel difficultyFromViewController =
@@ -64,6 +69,8 @@ public class SudokuBoardViewController {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 TextField textField = new TextField();
+                changeBoardValue(textField);
+
 
                 try {
                     fieldProperty[i][j] = builder
@@ -75,7 +82,7 @@ public class SudokuBoardViewController {
                 }
 
                 textField.textProperty().bindBidirectional(
-                        fieldProperty[i][j], new NumberStringConverter());
+                        fieldProperty[i][j],overridenConverter);
 
                 customizeTextField(textField, i, j);
                 board.add(textField, j, i);
@@ -88,13 +95,25 @@ public class SudokuBoardViewController {
         textField.setFont(Font.font(36));
         textField.setAlignment(Pos.CENTER);
 
-        if (sudokuBoardForGame.getValue(row, column) != 0 &&
-                !sudokuBoardForGame.getBooleanValue(row, column)) {
+        if (sudokuBoardForGame.getValue(row, column) != 0
+                && !sudokuBoardForGame.getBooleanValue(row, column)) {
             textField.setDisable(true);
             textField.setText(String.valueOf(sudokuBoardForGame.getValue(row, column)));
         } else if (sudokuBoardForGame.getValue(row, column) == 0) {
             textField.clear();
         }
+    }
+
+    public void changeBoardValue(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!validateFieldValue(newValue)) {
+                Platform.runLater(textField::clear);
+            }
+        });
+    }
+
+    public boolean validateFieldValue(String fieldValue) {
+        return fieldValue.length() == 1 && "123456789".contains(fieldValue);
     }
 
     @FXML
