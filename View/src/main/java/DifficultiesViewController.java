@@ -24,6 +24,7 @@
  * #L%
  */
 import java.io.IOException;
+import java.util.Locale;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 
@@ -54,6 +55,19 @@ public class DifficultiesViewController {
     void pressExit() {
         Platform.exit();
         System.exit(0);
+    }
+
+    @FXML
+    public void changeToEnglishAction() throws IOException {
+        Locale.setDefault(new Locale("en"));
+        SudokuGame.switchMode(SudokuGame.pathToMenu);
+
+    }
+
+    @FXML
+    public void changeToPolishAction() throws IOException {
+        Locale.setDefault(new Locale("pl"));
+        SudokuGame.switchMode(SudokuGame.pathToMenu);
     }
 
 }

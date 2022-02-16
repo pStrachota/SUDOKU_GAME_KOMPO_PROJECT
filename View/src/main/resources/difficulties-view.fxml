@@ -10,31 +10,63 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <Label fx:id="title" layoutX="468.0" layoutY="123.0" prefHeight="95.0" prefWidth="617.0" text="Wybierz poziom trudności" textAlignment="CENTER">
+      <VBox prefHeight="95.0" prefWidth="442.0">
+         <children>
+            <Label prefHeight="35.0" prefWidth="358.0" text="%choose.language">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="110.0" prefWidth="315.0">
+               <children>
+                  <Button mnemonicParsing="false" onMouseClicked="#changeToEnglishAction" text="%english.label">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onMouseClicked="#changeToPolishAction" text="%polish.label">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label fx:id="title" layoutX="468.0" layoutY="123.0" prefHeight="95.0" prefWidth="617.0" text="%label.difficulty" textAlignment="CENTER">
          <font>
             <Font name="Calibri" size="36.0" />
          </font>
       </Label>
-      <Label layoutX="451.0" layoutY="52.0" prefHeight="70.0" prefWidth="487.0" text="Witamy w grze sudoku!">
+      <Label layoutX="451.0" layoutY="52.0" prefHeight="70.0" prefWidth="487.0" text="%welcome.txt">
          <font>
             <Font name="Calibri" size="42.0" />
          </font>
       </Label>
-      <Button layoutX="468.0" layoutY="237.0" onMouseClicked="#pressEasy" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="Łatwy">
+      <Button layoutX="468.0" layoutY="237.0" onMouseClicked="#pressEasy" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="%easy.label">
          <font>
             <Font name="NimbusRoman-Regular" size="32.0" />
          </font></Button>
-      <Button layoutX="476.0" layoutY="363.0" onMouseClicked="#pressMedium" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="Średni">
+      <Button layoutX="476.0" layoutY="363.0" onMouseClicked="#pressMedium" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="%medium.label">
          <font>
             <Font name="NimbusRoman-Regular" size="32.0" />
          </font>
       </Button>
-      <Button layoutX="476.0" layoutY="493.0" onMouseClicked="#pressHard" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="Trudny">
+      <Button layoutX="476.0" layoutY="493.0" onMouseClicked="#pressHard" prefHeight="70.0" prefWidth="407.0" styleClass="button-difficulties" text="%hard.label">
          <font>
             <Font name="NimbusRoman-Regular" size="32.0" />
          </font>
       </Button>
-      <Button layoutX="536.0" layoutY="615.0" onMouseClicked="#pressExit" prefHeight="68.0" prefWidth="301.0" styleClass="button-exit" text="Wyjdź z gry">
+      <Button layoutX="536.0" layoutY="615.0" onMouseClicked="#pressExit" prefHeight="68.0" prefWidth="301.0" styleClass="button-exit" text="%exit.label">
          <font>
             <Font name="NimbusRoman-Regular" size="32.0" />
          </font>

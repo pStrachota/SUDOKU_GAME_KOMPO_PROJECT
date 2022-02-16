@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,9 +54,10 @@ public class SudokuGame extends Application {
     }
 
     public static void switchMode(String pathToFxmlFile) throws IOException {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("language");
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
-                        SudokuGame.class.getResource(pathToFxmlFile));
+                        SudokuGame.class.getResource(pathToFxmlFile), resourceBundle);
         scene.setRoot(fxmlLoader.load());
     }
 }
