@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="20.0" stylesheets="style.css" styleClass="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SudokuBoardViewController">
+<VBox alignment="CENTER" spacing="20.0" styleClass="VBox" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SudokuBoardViewController">
    <children>
       <HBox prefHeight="100.0" prefWidth="1400.0" />
       <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="620.0">
@@ -35,11 +35,39 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin>
       </GridPane>
-      <Button fx:id="backButton" onAction="#pressBack" prefHeight="78.0" prefWidth="504.0" styleClass="button-exit" text="Powrót do menu głównego">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Button>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="backButton" onAction="#pressBack" prefHeight="78.0" prefWidth="504.0" styleClass="button-exit" text="%back.menu">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionButtonCheck" prefHeight="78.0" prefWidth="325.0" text="%check.game">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#saveGameAction" prefHeight="78.0" prefWidth="216.0" text="%save.game">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#loadGameAction" prefHeight="78.0" prefWidth="249.0" text="%load.game">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

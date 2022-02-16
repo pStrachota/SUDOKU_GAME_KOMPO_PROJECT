@@ -59,6 +59,8 @@ public enum DifficultyLevel {
 
         for (FieldCoordinates it : fieldsToRemove) {
             sudokuBoard.setValue(it.getFieldX(), it.getFieldY(), 0);
+            sudokuBoard.setBooleanValue(it.getFieldX(), it.getFieldY(), true);
+
         }
         return sudokuBoard;
 

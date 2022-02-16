@@ -1,11 +1,3 @@
-import java.io.IOException;
-import java.util.ResourceBundle;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 /*
  * #%L
  * View
@@ -31,33 +23,14 @@ import javafx.stage.Stage;
  * THE SOFTWARE.
  * #L%
  */
+import java.util.ListResourceBundle;
 
-
-public class SudokuGame extends Application {
-
-    public static final String pathToGameMode = "sudoku-board-view.fxml";
-    public static final String pathToMenu = "difficulties-view.fxml";
-    private static Scene scene = new Scene(new Pane());
-
-    public static void main(String[] args) {
-        launch();
-    }
-
+public class Author_pl extends ListResourceBundle {
     @Override
-    public void start(Stage stage) throws IOException {
-
-        switchMode(pathToMenu);
-        stage.setMaximized(true);
-        stage.setScene(scene);
-        stage.show();
-
-    }
-
-    public static void switchMode(String pathToFxmlFile) throws IOException {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("language");
-        FXMLLoader fxmlLoader =
-                new FXMLLoader(
-                        SudokuGame.class.getResource(pathToFxmlFile), resourceBundle);
-        scene.setRoot(fxmlLoader.load());
+    protected Object[][] getContents() {
+        return new Object[][]{
+                {"1. ", "Autor: Piotr Strachota "},
+                {"2. ", "Autor aplikacji "}
+        };
     }
 }

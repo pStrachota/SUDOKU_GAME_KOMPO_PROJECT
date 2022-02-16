@@ -1,6 +1,5 @@
 .anchor-pane{
     -fx-background-color: rgba(0, 95, 238, 0.45);
-    /*-fx-background-image: url("at_the_table.png");*/
     -fx-background-position: right center;
     -fx-background-repeat: no-repeat;
     -fx-pref-height: 1024;

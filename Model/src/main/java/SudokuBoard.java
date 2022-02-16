@@ -33,13 +33,26 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class SudokuBoard implements Serializable, Cloneable {
     private final int sudokuSize = 9;
     private final List<SudokuField> board = Arrays.asList(new SudokuField[sudokuSize * sudokuSize]);
+    private final List<Boolean> booleanBoardToCheck =
+            Arrays.asList(new Boolean[sudokuSize * sudokuSize]);
     BacktrackingSudokuSolver backtrackingSudokuSolver;
 
     public SudokuBoard(BacktrackingSudokuSolver backtrackingSudokuSolver) {
         for (int index = 0; index < sudokuSize * sudokuSize; index++) {
             this.board.set(index, new SudokuField());
         }
+        for (int index = 0; index < sudokuSize * sudokuSize; index++) {
+            this.booleanBoardToCheck.set(index, Boolean.FALSE);
+        }
         this.backtrackingSudokuSolver = backtrackingSudokuSolver;
+    }
+
+    public void setBooleanValue(int row, int column, boolean value) {
+        this.booleanBoardToCheck.set(row * sudokuSize + column, value);
+    }
+
+    public Boolean getBooleanValue(int row, int column) {
+        return this.booleanBoardToCheck.get(row * sudokuSize + column);
     }
 
     public void solveGame() {
@@ -114,6 +127,23 @@ public class SudokuBoard implements Serializable, Cloneable {
     public int getValue(int row, int column) {
         return this.board.get(row * sudokuSize + column).getFieldValue();
     }
+
+    public boolean isValueCorrect(int row, int column) {
+            for (int index = 0; index < sudokuSize; index++) {
+                if (this.getValue(row, column) == this.getValue(row, index)
+                        && index != column) {
+                    return false;
+                }
+            }
+        for (int index = 0; index < sudokuSize; index++) {
+            if (this.getValue(row, column) == this.getValue(index, column)
+                    && index != row) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,11 +1,3 @@
-import java.io.IOException;
-import java.util.ResourceBundle;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 /*
  * #%L
  * View
@@ -31,33 +23,22 @@ import javafx.stage.Stage;
  * THE SOFTWARE.
  * #L%
  */
+public class FieldAdapter {
+    private SudokuBoard sudokuBoard;
+    private int row;
+    private int column;
 
-
-public class SudokuGame extends Application {
-
-    public static final String pathToGameMode = "sudoku-board-view.fxml";
-    public static final String pathToMenu = "difficulties-view.fxml";
-    private static Scene scene = new Scene(new Pane());
-
-    public static void main(String[] args) {
-        launch();
+    public FieldAdapter(SudokuBoard sudokuBoard, int row, int column) {
+        this.sudokuBoard = sudokuBoard;
+        this.row = row;
+        this.column = column;
     }
 
-    @Override
-    public void start(Stage stage) throws IOException {
-
-        switchMode(pathToMenu);
-        stage.setMaximized(true);
-        stage.setScene(scene);
-        stage.show();
-
+    public int getFieldValue() {
+        return sudokuBoard.getValue(row, column);
     }
 
-    public static void switchMode(String pathToFxmlFile) throws IOException {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("language");
-        FXMLLoader fxmlLoader =
-                new FXMLLoader(
-                        SudokuGame.class.getResource(pathToFxmlFile), resourceBundle);
-        scene.setRoot(fxmlLoader.load());
+    public void setFieldValue(int value) {
+        sudokuBoard.setValue(row, column, value);
     }
 }
