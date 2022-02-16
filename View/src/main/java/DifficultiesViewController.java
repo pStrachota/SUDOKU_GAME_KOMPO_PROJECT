@@ -23,10 +23,13 @@
  * THE SOFTWARE.
  * #L%
  */
+
 import java.io.IOException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 public class DifficultiesViewController {
 
@@ -62,6 +65,19 @@ public class DifficultiesViewController {
         Locale.setDefault(new Locale("en"));
         SudokuGame.switchMode(SudokuGame.pathToMenu);
 
+    }
+
+    @FXML
+    public void authorsInfoAction() {
+        ResourceBundle
+                resourceBundle =
+                ResourceBundle.getBundle("Author", Locale.getDefault());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(resourceBundle.getString("2. "));
+        alert.setHeaderText(null);
+        alert.setContentText(
+                resourceBundle.getString("1. "));
+        alert.showAndWait();
     }
 
     @FXML

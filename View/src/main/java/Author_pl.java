@@ -23,22 +23,14 @@
  * THE SOFTWARE.
  * #L%
  */
-public class FieldAdapter {
-    private SudokuBoard sudokuBoard;
-    private int row;
-    private int column;
+import java.util.ListResourceBundle;
 
-    public FieldAdapter(SudokuBoard sudokuBoard, int row, int column) {
-        this.sudokuBoard = sudokuBoard;
-        this.row = row;
-        this.column = column;
-    }
-
-    public int getFieldValue() {
-        return sudokuBoard.getValue(row, column);
-    }
-
-    public void setFieldValue(int value) {
-        sudokuBoard.setValue(row, column, value);
+public class Author_pl extends ListResourceBundle {
+    @Override
+    protected Object[][] getContents() {
+        return new Object[][]{
+                {"1. ", "Autor: Piotr Strachota "},
+                {"2. ", "Autor aplikacji "}
+        };
     }
 }
