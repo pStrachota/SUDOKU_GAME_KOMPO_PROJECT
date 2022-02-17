@@ -1,10 +1,13 @@
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /*
  * #%L
@@ -35,16 +38,19 @@ import javafx.stage.Stage;
 
 public class SudokuGame extends Application {
 
+    private static Logger logger = LogManager.getLogger(SudokuGame.class);
     public static final String pathToGameMode = "sudoku-board-view.fxml";
     public static final String pathToMenu = "difficulties-view.fxml";
     private static Scene scene = new Scene(new Pane());
 
     public static void main(String[] args) {
+        logger.info("Starting application");
         launch();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
+
 
         switchMode(pathToMenu);
         stage.setMaximized(true);

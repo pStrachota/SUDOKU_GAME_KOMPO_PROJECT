@@ -30,38 +30,46 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DifficultiesViewController {
 
+    private static Logger logger = LogManager.getLogger(DifficultiesViewController.class);
     static DifficultyLevel difficulty;
 
 
     @FXML
     public void pressHard() throws IOException {
+        logger.info("choosing hard difficulty level");
         difficulty = DifficultyLevel.Hard;
         SudokuGame.switchMode(SudokuGame.pathToGameMode);
     }
 
     @FXML
     public void pressMedium() throws IOException {
+        logger.info("choosing medium difficulty level");
         difficulty = DifficultyLevel.Medium;
         SudokuGame.switchMode(SudokuGame.pathToGameMode);
     }
 
     @FXML
     public void pressEasy() throws IOException {
+        logger.info("choosing easy difficulty level");
         difficulty = DifficultyLevel.Easy;
         SudokuGame.switchMode(SudokuGame.pathToGameMode);
     }
 
     @FXML
     void pressExit() {
+        logger.info("Closing application");
         Platform.exit();
         System.exit(0);
     }
 
     @FXML
     public void changeToEnglishAction() throws IOException {
+        logger.info("Changing language to english");
         Locale.setDefault(new Locale("en"));
         SudokuGame.switchMode(SudokuGame.pathToMenu);
 
@@ -69,6 +77,7 @@ public class DifficultiesViewController {
 
     @FXML
     public void authorsInfoAction() {
+        logger.info("Displaying author informations");
         ResourceBundle
                 resourceBundle =
                 ResourceBundle.getBundle("Author", Locale.getDefault());
@@ -82,6 +91,7 @@ public class DifficultiesViewController {
 
     @FXML
     public void changeToPolishAction() throws IOException {
+        logger.info("Changing language to polish");
         Locale.setDefault(new Locale("pl"));
         SudokuGame.switchMode(SudokuGame.pathToMenu);
     }
