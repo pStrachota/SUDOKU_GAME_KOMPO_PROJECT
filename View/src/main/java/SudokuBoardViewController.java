@@ -26,6 +26,8 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
@@ -38,10 +40,13 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SudokuBoardViewController {
 
+    private static Logger logger = LogManager.getLogger(DifficultiesViewController.class);
     private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
     private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
     StringConverter overridenConverter = new ModifiedStringConverter();
@@ -54,6 +59,7 @@ public class SudokuBoardViewController {
 
     @FXML
     public void initialize() {
+        logger.debug("Initializing sudoku game");
         sudokuBoardForGame.solveGame();
         eraseFields();
         fillFields();
@@ -76,7 +82,7 @@ public class SudokuBoardViewController {
                             .name("FieldValue")
                             .build();
                 } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
+                    logger.error(new UnknownMethodException(UnknownMethodException.UNKNOWN_METHOD, e));
                 }
 
                 textField.textProperty().bindBidirectional(
@@ -116,17 +122,17 @@ public class SudokuBoardViewController {
 
     @FXML
     public void onActionButtonCheck() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(ResourceBundle.getBundle("language", Locale.getDefault()).getString("game.result"));
 
         if (sudokuBoardForGame.checkBoard()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("WYNIK GRY");
-            alert.setContentText("WYGRALES");
+            logger.info("User won");
+            alert.setContentText(ResourceBundle.getBundle("language", Locale.getDefault()).getString("user.win"));
             alert.showAndWait();
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("WYNIK GRY");
-            alert.setContentText("PRZEGRALES");
+            logger.info("User did not win");
+            alert.setContentText(ResourceBundle.getBundle("language", Locale.getDefault()).getString("user.lose"));
             alert.showAndWait();
         }
     }
@@ -138,12 +144,20 @@ public class SudokuBoardViewController {
                 new FileChooser.ExtensionFilter("Text Files",
                         "*.txt"));
         File file = fileChooser.showSaveDialog(new Stage());
+        logger.info("Saving sudoku to file: " + file.getAbsolutePath());
+
 
         try (Dao<SudokuBoard> fileSudokuBoardDao =
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             fileSudokuBoardDao.write(sudokuBoardForGame);
+        } catch (WrongFileNameException e) {
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+        } catch (NotInitialisedDaoException e) {
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+        } catch (WrongFileContentException e) {
+            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
     }
@@ -155,12 +169,19 @@ public class SudokuBoardViewController {
                 new FileChooser.ExtensionFilter("Text Files",
                         "*.txt"));
         File file = fileChooser.showOpenDialog(new Stage());
+        logger.info("Loading sudoku from file: " + file.getAbsolutePath());
 
         try (Dao<SudokuBoard> fileSudokuBoardDao =
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             sudokuBoardForGame = fileSudokuBoardDao.read();
+        } catch (WrongFileNameException e) {
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+        } catch (NotInitialisedDaoException e) {
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+        } catch (WrongFileContentException e) {
+            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         reloadGrid();
     }
@@ -172,6 +193,7 @@ public class SudokuBoardViewController {
 
     @FXML
     protected void pressBack() throws IOException {
+        logger.debug("Switching to menu options");
         SudokuGame.switchMode(SudokuGame.pathToMenu);
         difficultyFromViewController.refill();
     }

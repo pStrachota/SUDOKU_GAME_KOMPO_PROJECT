@@ -1,6 +1,6 @@
 /*
  * #%L
- * KOMPO_PROJECT
+ * ModelProject
  * %%
  * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
@@ -23,13 +23,38 @@
  * THE SOFTWARE.
  * #L%
  */
-public class SudokuBoardDaoFactory {
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-    private SudokuBoardDaoFactory() {
+public class NotInitialisedDaoException extends Exception {
+
+    public static final String NULL_PASSED = "null.passed";
+    private static final ResourceBundle messages;
+
+    static {
+        Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
+        messages = ResourceBundle.getBundle("exceptions", locale);
     }
 
-    public static Dao<SudokuBoard> getFileDao(String fileName) throws
-            WrongFileNameException, NotInitialisedDaoException {
-        return new FileSudokuBoardDao(fileName);
+    public NotInitialisedDaoException(String message) {
+        super(message);
+    }
+
+    public NotInitialisedDaoException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    @Override
+    public String getLocalizedMessage() {
+
+        String message;
+
+        try {
+            message = messages.getString(getMessage());
+        } catch (MissingResourceException mre) {
+            message = "No resource for " + getMessage() + "key";
+        }
+        return message;
     }
 }

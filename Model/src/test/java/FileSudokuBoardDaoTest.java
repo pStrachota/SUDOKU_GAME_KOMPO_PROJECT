@@ -10,10 +10,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,6 @@
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,35 +36,44 @@ class FileSudokuBoardDaoTest {
         try (Dao<SudokuBoard> fileSudokuBoardDaoTest =
                      SudokuBoardDaoFactory.getFileDao("nothing.txt")) {
             System.out.println("Non existing file name pass to 'getFileDao'");
+            fileSudokuBoardDaoTest.read();
+        } catch (WrongFileNameException e) {
+            String actualMessage = e.toString();
+            String expectedMessage =
+                    "WrongFileNameException: Zła nazwa pliku lub plik nie istnieje";
+            assertEquals(actualMessage, expectedMessage);
         } catch (Exception e) {
-            String actualMessage = e.getMessage();
-            String expectedMessage = "Nie można odnaleźć określonego pliku";
-            assertTrue(actualMessage.contains(expectedMessage));
+            e.printStackTrace();
         }
     }
 
     @Test
     void nullFileNameTest() {
+        System.out.println("Non existing file name pass to 'getFileDao'");
         try (Dao<SudokuBoard> fileSudokuBoardDaoTest =
                      SudokuBoardDaoFactory.getFileDao(null)) {
-            System.out.println("Non existing file name pass to 'getFileDao'");
+        } catch (NotInitialisedDaoException e) {
+            String actualMessage = e.toString();
+            String expectedMessage = "NotInitialisedDaoException: Dao nie zostało zainicjalizowane";
+            assertEquals(actualMessage, expectedMessage);
         } catch (Exception e) {
-            String actualMessage = e.getMessage();
-            String expectedMessage = "NIE PODANO NAZWY PLIKU";
-            assertTrue(actualMessage.contains(expectedMessage));
+            e.printStackTrace();
         }
     }
+
 
     @Test
     void incorrectFileNameTest() {
         try (Dao<SudokuBoard> fileSudokuBoardDaoTest =
-                SudokuBoardDaoFactory.getFileDao("///")) {
+                     SudokuBoardDaoFactory.getFileDao("///'");) {
             System.out.println("Incorrect file name pass to 'getFileDao'");
+            fileSudokuBoardDaoTest.read();
+        } catch (WrongFileNameException e) {
+            String actualMessage = e.toString();
+            String expectedMessage = "WrongFileNameException: Zła nazwa pliku lub plik nie istniej";
+            assertEquals(actualMessage, expectedMessage);
         } catch (Exception e) {
-            String actualMessage = e.getMessage();
-            String expectedMessage = "Nazwa pliku, nazwa katalogu "
-                    + "lub składnia etykiety woluminu jest niepoprawna";
-            assertTrue(actualMessage.contains(expectedMessage));
+            e.printStackTrace();
         }
     }
 
