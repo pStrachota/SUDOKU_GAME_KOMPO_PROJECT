@@ -27,30 +27,30 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class WrongFileException extends Exception {
+public class NotInitialisedDaoException extends Exception {
 
+    public static final String NULL_PASSED = "null.passed";
     private static final ResourceBundle messages;
-    //Message keys
-    public static final String FILE_IO_ERROR = "file.io.error";
 
     static {
         Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
         messages = ResourceBundle.getBundle("exceptions", locale);
     }
 
-    public WrongFileException(String message) {
+    public NotInitialisedDaoException(String message) {
         super(message);
     }
 
-    public WrongFileException(String message, Throwable cause) {
+    public NotInitialisedDaoException(String message, Throwable cause) {
         super(message, cause);
     }
 
     @Override
     public String getLocalizedMessage() {
+
         String message;
+
         try {
-            //Exception message is a key
             message = messages.getString(getMessage());
         } catch (MissingResourceException mre) {
             message = "No resource for " + getMessage() + "key";

@@ -28,7 +28,8 @@ public class SudokuBoardDaoFactory {
     private SudokuBoardDaoFactory() {
     }
 
-    public static Dao<SudokuBoard> getFileDao(String fileName) {
+    public static Dao<SudokuBoard> getFileDao(String fileName) throws
+            WrongFileNameException, NotInitialisedDaoException {
         return new FileSudokuBoardDao(fileName);
     }
 }

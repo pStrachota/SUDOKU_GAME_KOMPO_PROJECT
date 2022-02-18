@@ -24,8 +24,7 @@
  * #L%
  */
 public interface Dao<T> extends AutoCloseable {
-    T read() throws WrongFileContentException,
-            WrongFileContentException, WrongFileException, NonExistingFileException;
+    T read() throws WrongFileContentException, WrongFileNameException;
 
-    void write(T obj) throws WrongFileException;
+    void write(T obj) throws WrongFileNameException;
 }

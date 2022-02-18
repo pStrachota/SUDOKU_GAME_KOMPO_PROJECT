@@ -25,7 +25,6 @@
  */
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,9 +35,10 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
 
     private final String fileName;
 
-    public FileSudokuBoardDao(String fileName) {
+    public FileSudokuBoardDao(String fileName)
+            throws NotInitialisedDaoException {
         if (fileName == null) {
-            throw new IllegalArgumentException("NIE PODANO NAZWY PLIKU");
+            throw new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED);
         } else {
             this.fileName = fileName;
         }
@@ -46,26 +46,24 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
 
     @Override
     public SudokuBoard read() throws WrongFileContentException,
-            WrongFileException, NonExistingFileException {
+            WrongFileNameException {
         try (FileInputStream fileInputStream = new FileInputStream(fileName);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             return (SudokuBoard) objectInputStream.readObject();
-        } catch (FileNotFoundException e) {
-            throw new NonExistingFileException(NonExistingFileException.NON_EXISTING_FILE, e);
         } catch (IOException e) {
-            throw new WrongFileException(WrongFileException.FILE_IO_ERROR, e);
+            throw new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e);
         } catch (ClassNotFoundException e) {
             throw new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e);
         }
     }
 
     @Override
-    public void write(SudokuBoard obj) throws WrongFileException {
+    public void write(SudokuBoard obj) throws WrongFileNameException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(obj);
         } catch (IOException e) {
-            throw new WrongFileException(WrongFileException.FILE_IO_ERROR, e);
+            throw new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e);
         }
     }
 

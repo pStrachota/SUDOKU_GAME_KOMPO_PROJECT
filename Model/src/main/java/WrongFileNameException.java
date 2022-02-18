@@ -27,29 +27,27 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class NonExistingFileException extends Exception {
+public class WrongFileNameException extends Exception {
 
-    public static final String NON_EXISTING_FILE = "file.not.found";
     private static final ResourceBundle messages;
+    public static final String FILE_IO_ERROR = "file.io.error";
 
     static {
         Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
         messages = ResourceBundle.getBundle("exceptions", locale);
     }
 
-    public NonExistingFileException(String message) {
+    public WrongFileNameException(String message) {
         super(message);
     }
 
-    public NonExistingFileException(String message, Throwable cause) {
+    public WrongFileNameException(String message, Throwable cause) {
         super(message, cause);
     }
 
     @Override
     public String getLocalizedMessage() {
-
         String message;
-
         try {
             message = messages.getString(getMessage());
         } catch (MissingResourceException mre) {
