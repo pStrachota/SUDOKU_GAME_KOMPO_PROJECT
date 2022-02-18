@@ -82,7 +82,7 @@ public class SudokuBoardViewController {
                             .name("FieldValue")
                             .build();
                 } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
+                    logger.error(e);
                 }
 
                 textField.textProperty().bindBidirectional(
@@ -150,8 +150,14 @@ public class SudokuBoardViewController {
         try (Dao<SudokuBoard> fileSudokuBoardDao =
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             fileSudokuBoardDao.write(sudokuBoardForGame);
+        } catch (WrongFileNameException e) {
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+        } catch (NotInitialisedDaoException e) {
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+        } catch (WrongFileContentException e) {
+            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
     }
@@ -168,8 +174,14 @@ public class SudokuBoardViewController {
         try (Dao<SudokuBoard> fileSudokuBoardDao =
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             sudokuBoardForGame = fileSudokuBoardDao.read();
+        } catch (WrongFileNameException e) {
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+        } catch (NotInitialisedDaoException e) {
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+        } catch (WrongFileContentException e) {
+            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         reloadGrid();
     }
