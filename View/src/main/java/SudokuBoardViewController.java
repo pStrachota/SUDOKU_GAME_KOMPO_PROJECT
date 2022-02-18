@@ -82,7 +82,7 @@ public class SudokuBoardViewController {
                             .name("FieldValue")
                             .build();
                 } catch (NoSuchMethodException e) {
-                    logger.error(e);
+                    logger.error(new UnknownMethodException(UnknownMethodException.UNKNOWN_METHOD, e));
                 }
 
                 textField.textProperty().bindBidirectional(

@@ -21,10 +21,10 @@ import org.apache.logging.log4j.LogManager;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +49,7 @@ public class SudokuGame extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
 
         switchMode(pathToMenu);
@@ -59,11 +59,15 @@ public class SudokuGame extends Application {
 
     }
 
-    public static void switchMode(String pathToFxmlFile) throws IOException {
+    public static void switchMode(String pathToFxmlFile) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("language");
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
                         SudokuGame.class.getResource(pathToFxmlFile), resourceBundle);
-        scene.setRoot(fxmlLoader.load());
+        try {
+            scene.setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            logger.error(new FXMLLoaderException(FXMLLoaderException.LOADER_NOT_LOAD), e);
+        }
     }
 }
