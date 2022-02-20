@@ -1,6 +1,6 @@
 /*
  * #%L
- * KOMPO_PROJECT
+ * ModelProject
  * %%
  * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
@@ -23,9 +23,38 @@
  * THE SOFTWARE.
  * #L%
  */
-public interface Dao<T> extends AutoCloseable {
-    T read() throws WrongFileContentException, WrongFileNameException,
-            GivenSudokuNotExistException;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-    void write(T obj) throws WrongFileNameException, NameAlreadyExistException;
+public class GivenSudokuNotExistException extends Exception {
+
+    public static final String NAME_NOT_EXIST = "name.not.exist";
+    private static final ResourceBundle messages;
+
+    static {
+        Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
+        messages = ResourceBundle.getBundle("exceptions", locale);
+    }
+
+    public GivenSudokuNotExistException(String message) {
+        super(message);
+    }
+
+    public GivenSudokuNotExistException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    @Override
+    public String getLocalizedMessage() {
+
+        String message;
+
+        try {
+            message = messages.getString(getMessage());
+        } catch (MissingResourceException mre) {
+            message = "No resource for " + getMessage() + "key";
+        }
+        return message;
+    }
 }

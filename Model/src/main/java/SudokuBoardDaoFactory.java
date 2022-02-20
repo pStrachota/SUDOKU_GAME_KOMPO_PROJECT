@@ -29,7 +29,11 @@ public class SudokuBoardDaoFactory {
     }
 
     public static Dao<SudokuBoard> getFileDao(String fileName) throws
-            WrongFileNameException, NotInitialisedDaoException {
+            NotInitialisedDaoException {
         return new FileSudokuBoardDao(fileName);
+    }
+
+    public static Dao<SudokuBoard> getJdbcDao(String fileName) throws NotInitialisedDaoException {
+        return new JdbcSudokuBoardDao(fileName);
     }
 }
