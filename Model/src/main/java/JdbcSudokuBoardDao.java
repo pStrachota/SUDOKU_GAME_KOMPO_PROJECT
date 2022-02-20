@@ -38,13 +38,13 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
     private final String fileName;
 
     public JdbcSudokuBoardDao(String fileName)
-         throws NotInitialisedDaoException {
-            if (fileName == null) {
-                throw new NotInitialisedDaoException(
-                        NotInitialisedDaoException.NULL_PASSED, new IllegalArgumentException());
-            } else {
-                this.fileName = fileName;
-            }
+            throws NotInitialisedDaoException {
+        if (fileName == null) {
+            throw new NotInitialisedDaoException(
+                    NotInitialisedDaoException.NULL_PASSED, new IllegalArgumentException());
+        } else {
+            this.fileName = fileName;
+        }
     }
 
     @Override
@@ -57,13 +57,15 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
             GivenSudokuNotExistException {
         SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
         String sudokuFieldsString = null;
+        String sudokuBooleanValuesString = null;
         int[] sudokuFieldsTab = new int[81];
+        boolean[] sudokuFieldsBoolean = new boolean[81];
         String testName = null;
 
         try (Connection connection = DriverManager.getConnection(URL);
              Statement statement = connection.createStatement();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT sudoku_name, sudoku_fields from sudoku_boards"
+                     "SELECT sudoku_name, sudoku_fields, sudoku_boolean_values from sudoku_boards"
                              + " where sudoku_name = ?")) {
 
             statement.execute("use Sudoku_Games");
@@ -73,6 +75,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
             if (resultSet.next()) {
                 testName = resultSet.getString(1);
                 sudokuFieldsString = resultSet.getString(2);
+                sudokuBooleanValuesString = resultSet.getString(3);
             }
 
             if (testName == null) {
@@ -83,10 +86,17 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
 
             for (int i = 0; i < 81; i++) {
                 sudokuFieldsTab[i] = Character.getNumericValue(sudokuFieldsString.charAt(i));
+                int index = Character.getNumericValue(sudokuBooleanValuesString.charAt(i));
+                if (index == 0) {
+                    sudokuFieldsBoolean[i] = false;
+                } else {
+                    sudokuFieldsBoolean[i] = true;
+                }
             }
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
+                    sudokuBoard.setBooleanValue(i, j, sudokuFieldsBoolean[i * 9 + j]);
                     sudokuBoard.setValue(i, j, sudokuFieldsTab[i * 9 + j]);
                 }
             }
@@ -107,7 +117,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
                      "SELECT sudoku_name, sudoku_fields from sudoku_boards"
                              + " where sudoku_name = ?")) {
 
-            statement.execute("use Kompo_Sudoku");
+            statement.execute("use Sudoku_Games");
             preparedStatement.setString(1, fileName);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -123,10 +133,11 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
             try (Connection connection2 = DriverManager.getConnection(URL);
                  Statement statement2 = connection2.createStatement();
                  PreparedStatement preparedStatement2 = connection2
-                         .prepareStatement("INSERT INTO sudoku_boards values (?, ?)")) {
-                statement2.execute("use Kompo_Sudoku");
+                         .prepareStatement("INSERT INTO sudoku_boards values (?, ?, ?)")) {
+                statement2.execute("use Sudoku_Games");
                 preparedStatement2.setString(1, fileName);
                 preparedStatement2.setString(2, obj.toString());
+                preparedStatement2.setString(3, obj.booleanValuesToString());
                 preparedStatement2.executeUpdate();
 
             } catch (SQLException throwables) {

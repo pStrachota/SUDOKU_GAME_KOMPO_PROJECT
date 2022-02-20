@@ -25,7 +25,6 @@
  */
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -46,15 +45,18 @@ import org.apache.logging.log4j.Logger;
 
 public class SudokuBoardViewController {
 
-    private static Logger logger = LogManager.getLogger(DifficultiesViewController.class);
+    private static final Logger logger = LogManager.getLogger(DifficultiesViewController.class);
     private final JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
     private final JavaBeanIntegerProperty[][] fieldProperty = new JavaBeanIntegerProperty[9][9];
+    private final DifficultyLevel difficultyFromViewController =
+            DifficultiesViewController.difficulty;
     StringConverter overridenConverter = new ModifiedStringConverter();
-
+    @FXML
+    TextField zapiszTextField;
+    @FXML
+    TextField wczytajTextField;
     @FXML
     GridPane board;
-    private DifficultyLevel difficultyFromViewController =
-            DifficultiesViewController.difficulty;
     private SudokuBoard sudokuBoardForGame = new SudokuBoard(new BacktrackingSudokuSolver());
 
     @FXML
@@ -87,12 +89,20 @@ public class SudokuBoardViewController {
                 }
 
                 textField.textProperty().bindBidirectional(
-                        fieldProperty[i][j],overridenConverter);
+                        fieldProperty[i][j], overridenConverter);
 
                 customizeTextField(textField, i, j);
                 board.add(textField, j, i);
             }
         }
+    }
+
+    public void changeBoardValue(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!validateFieldValue(newValue)) {
+                Platform.runLater(textField::clear);
+            }
+        });
     }
 
     public void customizeTextField(TextField textField, int row, int column) {
@@ -107,14 +117,6 @@ public class SudokuBoardViewController {
         } else if (sudokuBoardForGame.getValue(row, column) == 0) {
             textField.clear();
         }
-    }
-
-    public void changeBoardValue(TextField textField) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!validateFieldValue(newValue)) {
-                Platform.runLater(textField::clear);
-            }
-        });
     }
 
     public boolean validateFieldValue(String fieldValue) {
@@ -132,7 +134,6 @@ public class SudokuBoardViewController {
             alert.setContentText(ResourceBundle.getBundle(
                     "language", Locale.getDefault()).getString("user.win"));
             alert.showAndWait();
-
         } else {
             logger.info("User did not win");
             alert.setContentText(ResourceBundle.getBundle(
@@ -155,9 +156,11 @@ public class SudokuBoardViewController {
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             fileSudokuBoardDao.write(sudokuBoardForGame);
         } catch (WrongFileNameException e) {
-            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+            logger.error(new WrongFileNameException(
+                    WrongFileNameException.FILE_IO_ERROR, e));
         } catch (NotInitialisedDaoException e) {
-            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+            logger.error(new NotInitialisedDaoException(
+                    NotInitialisedDaoException.NULL_PASSED, e));
         } catch (WrongFileContentException e) {
             logger.error(new WrongFileContentException(
                     WrongFileContentException.WRONG_FILE_CONTENT, e));
@@ -180,11 +183,9 @@ public class SudokuBoardViewController {
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             sudokuBoardForGame = fileSudokuBoardDao.read();
         } catch (WrongFileNameException e) {
-            logger.error(new WrongFileNameException(
-                    WrongFileNameException.FILE_IO_ERROR, e));
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
         } catch (NotInitialisedDaoException e) {
-            logger.error(new NotInitialisedDaoException(
-                    NotInitialisedDaoException.NULL_PASSED, e));
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
         } catch (WrongFileContentException e) {
             logger.error(new WrongFileContentException(
                     WrongFileContentException.WRONG_FILE_CONTENT, e));
@@ -195,15 +196,74 @@ public class SudokuBoardViewController {
     }
 
     void reloadGrid() {
+        logger.debug("Reloading sudoku game grid");
         board.getChildren().clear();
         fillFields();
     }
 
     @FXML
-    protected void pressBack() throws IOException {
+    protected void pressBack() {
         logger.debug("Switching to menu options");
         SudokuGame.switchMode(SudokuGame.pathToMenu);
         difficultyFromViewController.refill();
+    }
+
+    @FXML
+    public int saveToDatabase() {
+        String boardName = zapiszTextField.getText();
+
+        try (Dao<SudokuBoard> fileSudokuBoardDao =
+                     SudokuBoardDaoFactory.getJdbcDao(boardName)) {
+            logger.info("Saving sudoku '" + boardName + "' to database");
+            fileSudokuBoardDao.write(sudokuBoardForGame);
+        } catch (NameAlreadyExistException e) {
+            showErrorAlert("invalid.name", "duplicated.name");
+            zapiszTextField.clear();
+            logger.error(new NameAlreadyExistException(NameAlreadyExistException.DUPLICATED_NAME));
+            return -1;
+        } catch (WrongFileNameException e) {
+            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR));
+        } catch (NotInitialisedDaoException e) {
+            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    private void showErrorAlert(String title, String context) {
+        ResourceBundle resourceBundle =
+                ResourceBundle.getBundle("Exceptions", Locale.getDefault());
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString(title));
+        alert.setHeaderText(null);
+        alert.setContentText(resourceBundle.getString(context));
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void loadFromDatabase() {
+
+        String boardName = wczytajTextField.getText();
+        SudokuBoard testSudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+
+        try (Dao<SudokuBoard> fileSudokuBoardDao =
+                     SudokuBoardDaoFactory.getJdbcDao(boardName)) {
+            testSudokuBoard = fileSudokuBoardDao.read();
+            sudokuBoardForGame = testSudokuBoard;
+            reloadGrid();
+        } catch (GivenSudokuNotExistException e) {
+            logger.error(new GivenSudokuNotExistException(
+                    GivenSudokuNotExistException.NAME_NOT_EXIST));
+            showErrorAlert("invalid.name", "name.not.exist");
+            zapiszTextField.clear();
+        } catch (WrongFileContentException e) {
+            logger.error(new WrongFileContentException(
+                    WrongFileContentException.WRONG_FILE_CONTENT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
