@@ -35,9 +35,8 @@ import org.apache.logging.log4j.Logger;
 
 public class DifficultiesViewController {
 
-    private static Logger logger = LogManager.getLogger(DifficultiesViewController.class);
     static DifficultyLevel difficulty;
-
+    private static Logger logger = LogManager.getLogger(DifficultiesViewController.class);
 
     @FXML
     public void pressHard() throws IOException {

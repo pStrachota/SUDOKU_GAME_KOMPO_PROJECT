@@ -27,9 +27,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class WrongFileContentException extends Exception {
+public class GivenSudokuNotExistException extends Exception {
 
-    public static final String WRONG_FILE_CONTENT = "wrong.file.content";
+    public static final String NAME_NOT_EXIST = "name.not.exist";
     private static final ResourceBundle messages;
 
     static {
@@ -37,11 +37,11 @@ public class WrongFileContentException extends Exception {
         messages = ResourceBundle.getBundle("exceptionsModel", locale);
     }
 
-    public WrongFileContentException(String message) {
+    public GivenSudokuNotExistException(String message) {
         super(message);
     }
 
-    public WrongFileContentException(String message, Throwable cause) {
+    public GivenSudokuNotExistException(String message, Throwable cause) {
         super(message, cause);
     }
 

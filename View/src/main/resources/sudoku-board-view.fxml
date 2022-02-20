@@ -7,7 +7,6 @@
 
 <VBox alignment="CENTER" spacing="20.0" styleClass="VBox" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SudokuBoardViewController">
    <children>
-      <HBox prefHeight="100.0" prefWidth="1400.0" />
       <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="620.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -35,37 +34,67 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </VBox.margin>
       </GridPane>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="42.0" prefWidth="1400.0">
          <children>
-            <Button fx:id="backButton" onAction="#pressBack" prefHeight="78.0" prefWidth="504.0" styleClass="button-exit" text="%back.menu">
+            <Button fx:id="backButton" minHeight="40.0" onAction="#pressBack" prefHeight="53.0" prefWidth="486.0" styleClass="button-exit" text="%back.menu">
                <font>
-                  <Font size="36.0" />
+                  <Font size="20.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onActionButtonCheck" prefHeight="78.0" prefWidth="325.0" text="%check.game">
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#onActionButtonCheck" prefHeight="53.0" prefWidth="326.0" text="%check.game">
                <font>
-                  <Font size="36.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#saveGameAction" prefHeight="78.0" prefWidth="216.0" text="%save.game">
-               <font>
-                  <Font size="36.0" />
+                  <Font size="20.0" />
                </font>
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#loadGameAction" prefHeight="78.0" prefWidth="249.0" text="%load.game">
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#saveGameAction" prefHeight="43.0" prefWidth="216.0" text="%save.game">
                <font>
-                  <Font size="36.0" />
+                  <Font size="20.0" />
                </font>
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>
             </Button>
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#loadGameAction" prefHeight="47.0" prefWidth="250.0" text="%load.game">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <HBox prefHeight="186.0" prefWidth="1400.0">
+         <children>
+            <Button minHeight="40.0" minWidth="10.0" mnemonicParsing="false" onAction="#saveToDatabase" prefHeight="47.0" prefWidth="408.0" text="%save.to.db">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </Button>
+            <TextField fx:id="zapiszTextField" prefHeight="49.0" prefWidth="150.0" promptText="%save.name">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </TextField>
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#loadFromDatabase" prefHeight="53.0" prefWidth="405.0" text="%load.from.db">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <TextField fx:id="wczytajTextField" prefHeight="58.0" prefWidth="150.0" promptText="%load.name">
+               <HBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </HBox.margin>
+            </TextField>
          </children>
       </HBox>
    </children>

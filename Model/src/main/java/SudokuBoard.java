@@ -167,6 +167,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         for (int row = 0; row < sudokuSize; row++) {
             for (int column = 0; column < sudokuSize; column++) {
                 sudokuBoardClone.setValue(row, column, this.getValue(row, column));
+                sudokuBoardClone.setBooleanValue(row, column, this.getBooleanValue(row, column));
             }
         }
         return sudokuBoardClone;
@@ -185,20 +186,27 @@ public class SudokuBoard implements Serializable, Cloneable {
     public String toString() {
         StringBuilder res = new StringBuilder();
         for (int row = 0; row < sudokuSize; row++) {
-            if (row != 0 && row % 3 == 0) {
-                res.append("------+-------+------\n");
-            }
             for (int col = 0; col < sudokuSize; col++) {
-                if (col != 0 && col % 3 == 0) {
-                    res.append("| ");
-                }
                 res.append(this.getValue(row, col));
-                res.append(" ");
             }
-            res.append('\n');
         }
         return res.toString();
     }
+
+    public String booleanValuesToString() {
+        StringBuilder res = new StringBuilder();
+        for (int row = 0; row < sudokuSize; row++) {
+            for (int col = 0; col < sudokuSize; col++) {
+                if (this.getBooleanValue(row, col)) {
+                    res.append("1");
+                } else {
+                    res.append("0");
+                }
+            }
+        }
+        return res.toString();
+    }
+
 }
 
 

@@ -24,7 +24,8 @@
  * #L%
  */
 public interface Dao<T> extends AutoCloseable {
-    T read() throws WrongFileContentException, WrongFileNameException;
+    T read() throws WrongFileContentException, WrongFileNameException,
+            GivenSudokuNotExistException;
 
-    void write(T obj) throws WrongFileNameException;
+    void write(T obj) throws WrongFileNameException, NameAlreadyExistException;
 }

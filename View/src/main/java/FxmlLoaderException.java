@@ -1,6 +1,6 @@
 /*
  * #%L
- * ModelProject
+ * View
  * %%
  * Copyright (C) 2021 - 2022 Piotr Strachota
  * %%
@@ -27,27 +27,26 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class WrongFileContentException extends Exception {
+public class FxmlLoaderException extends Exception {
 
-    public static final String WRONG_FILE_CONTENT = "wrong.file.content";
+    public static final String LOADER_NOT_LOAD = "loader.not.load";
     private static final ResourceBundle messages;
 
     static {
         Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
-        messages = ResourceBundle.getBundle("exceptionsModel", locale);
+        messages = ResourceBundle.getBundle("exceptionsView", locale);
     }
 
-    public WrongFileContentException(String message) {
+    public FxmlLoaderException(String message) {
         super(message);
     }
 
-    public WrongFileContentException(String message, Throwable cause) {
+    public FxmlLoaderException(String message, Throwable cause) {
         super(message, cause);
     }
 
     @Override
     public String getLocalizedMessage() {
-
         String message;
 
         try {
