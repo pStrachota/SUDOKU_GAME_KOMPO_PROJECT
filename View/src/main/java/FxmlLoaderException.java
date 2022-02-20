@@ -34,7 +34,7 @@ public class FxmlLoaderException extends Exception {
 
     static {
         Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
-        messages = ResourceBundle.getBundle("exceptions", locale);
+        messages = ResourceBundle.getBundle("exceptionsView", locale);
     }
 
     public FxmlLoaderException(String message) {

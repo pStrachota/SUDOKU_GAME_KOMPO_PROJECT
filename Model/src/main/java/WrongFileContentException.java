@@ -34,7 +34,7 @@ public class WrongFileContentException extends Exception {
 
     static {
         Locale locale = Locale.getDefault(Locale.Category.DISPLAY);
-        messages = ResourceBundle.getBundle("exceptions", locale);
+        messages = ResourceBundle.getBundle("exceptionsModel", locale);
     }
 
     public WrongFileContentException(String message) {
