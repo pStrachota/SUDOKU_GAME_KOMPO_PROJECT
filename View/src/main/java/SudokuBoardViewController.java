@@ -82,7 +82,8 @@ public class SudokuBoardViewController {
                             .name("FieldValue")
                             .build();
                 } catch (NoSuchMethodException e) {
-                    logger.error(new UnknownMethodException(UnknownMethodException.UNKNOWN_METHOD, e));
+                    logger.error(new UnknownMethodException(
+                            UnknownMethodException.UNKNOWN_METHOD, e));
                 }
 
                 textField.textProperty().bindBidirectional(
@@ -123,16 +124,19 @@ public class SudokuBoardViewController {
     @FXML
     public void onActionButtonCheck() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(ResourceBundle.getBundle("language", Locale.getDefault()).getString("game.result"));
+        alert.setTitle(ResourceBundle.getBundle(
+                "language", Locale.getDefault()).getString("game.result"));
 
         if (sudokuBoardForGame.checkBoard()) {
             logger.info("User won");
-            alert.setContentText(ResourceBundle.getBundle("language", Locale.getDefault()).getString("user.win"));
+            alert.setContentText(ResourceBundle.getBundle(
+                    "language", Locale.getDefault()).getString("user.win"));
             alert.showAndWait();
 
         } else {
             logger.info("User did not win");
-            alert.setContentText(ResourceBundle.getBundle("language", Locale.getDefault()).getString("user.lose"));
+            alert.setContentText(ResourceBundle.getBundle(
+                    "language", Locale.getDefault()).getString("user.lose"));
             alert.showAndWait();
         }
     }
@@ -155,7 +159,8 @@ public class SudokuBoardViewController {
         } catch (NotInitialisedDaoException e) {
             logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
         } catch (WrongFileContentException e) {
-            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
+            logger.error(new WrongFileContentException(
+                    WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
             logger.error(e);
         }
@@ -175,11 +180,14 @@ public class SudokuBoardViewController {
                      SudokuBoardDaoFactory.getFileDao(file.getAbsolutePath())) {
             sudokuBoardForGame = fileSudokuBoardDao.read();
         } catch (WrongFileNameException e) {
-            logger.error(new WrongFileNameException(WrongFileNameException.FILE_IO_ERROR, e));
+            logger.error(new WrongFileNameException(
+                    WrongFileNameException.FILE_IO_ERROR, e));
         } catch (NotInitialisedDaoException e) {
-            logger.error(new NotInitialisedDaoException(NotInitialisedDaoException.NULL_PASSED, e));
+            logger.error(new NotInitialisedDaoException(
+                    NotInitialisedDaoException.NULL_PASSED, e));
         } catch (WrongFileContentException e) {
-            logger.error(new WrongFileContentException(WrongFileContentException.WRONG_FILE_CONTENT, e));
+            logger.error(new WrongFileContentException(
+                    WrongFileContentException.WRONG_FILE_CONTENT, e));
         } catch (Exception e) {
             logger.error(e);
         }

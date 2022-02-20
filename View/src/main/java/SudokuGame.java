@@ -1,13 +1,12 @@
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /*
  * #%L
@@ -21,10 +20,10 @@ import org.apache.logging.log4j.LogManager;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,9 +37,9 @@ import org.apache.logging.log4j.LogManager;
 
 public class SudokuGame extends Application {
 
-    private static Logger logger = LogManager.getLogger(SudokuGame.class);
     public static final String pathToGameMode = "sudoku-board-view.fxml";
     public static final String pathToMenu = "difficulties-view.fxml";
+    private static Logger logger = LogManager.getLogger(SudokuGame.class);
     private static Scene scene = new Scene(new Pane());
 
     public static void main(String[] args) {
@@ -67,7 +66,7 @@ public class SudokuGame extends Application {
         try {
             scene.setRoot(fxmlLoader.load());
         } catch (IOException e) {
-            logger.error(new FXMLLoaderException(FXMLLoaderException.LOADER_NOT_LOAD), e);
+            logger.error(new FxmlLoaderException(FxmlLoaderException.LOADER_NOT_LOAD), e);
         }
     }
 }
