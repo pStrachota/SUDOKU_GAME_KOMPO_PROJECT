@@ -70,7 +70,7 @@ class FileSudokuBoardDaoTest {
             fileSudokuBoardDaoTest.read();
         } catch (WrongFileNameException e) {
             String actualMessage = e.toString();
-            String expectedMessage = "WrongFileNameException: Zła nazwa pliku lub plik nie istniej";
+            String expectedMessage = "WrongFileNameException: Zła nazwa pliku lub plik nie istnieje";
             assertEquals(actualMessage, expectedMessage);
         } catch (Exception e) {
             e.printStackTrace();
